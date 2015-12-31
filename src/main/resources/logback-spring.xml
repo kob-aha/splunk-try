@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
+
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+
     <logger name="org.springframework.web" level="DEBUG"/>
 
-    <logger name="org.edu.ka" level="INFO"/>
+    <appender name="socket" class="com.splunk.logging.TcpAppender">
+        <RemoteHost>localhost</RemoteHost>
+        <Port>5005</Port>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>LOGBACK -> %date{ISO8601} [%thread] %level: %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!--<logger name="splunk.logger" additivity="false" level="INFO">-->
+        <!--<appender-ref ref="socket"/>-->
+    <!--</logger>-->
+
+    <logger name="org.edu.ka" level="INFO">
+        <appender-ref ref="socket"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="socket" />
+        <!--<appender-ref ref="FILE" />-->
+    </root>
 </configuration>

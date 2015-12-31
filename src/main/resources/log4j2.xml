@@ -1,0 +1,14 @@
+<Configuration status="info" name="example" packages="">
+    <Appenders>
+        <Socket name="socket" host="localhost" port="5005">
+            <PatternLayout pattern="LOG4J2 -> %p: %m%n" charset="UTF-8"/>
+        </Socket>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+        </Root>
+        <Logger name="org.edu.ka" level="info">
+            <AppenderRef ref="socket"/>
+        </Logger>
+    </Loggers>
+</Configuration>

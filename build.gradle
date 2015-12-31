@@ -11,9 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-//apply plugin: 'eclipse'
-//apply plugin: 'idea'
-apply plugin: 'spring-boot' 
+apply plugin: 'spring-boot'
 
 jar {
 	baseName = 'splunk-try'
@@ -26,19 +24,22 @@ repositories {
 	mavenCentral()
 }
 
-
-dependencies {
-	compile('org.springframework.boot:spring-boot-starter')
-	testCompile('org.springframework.boot:spring-boot-starter-test') 
+repositories {
+	maven {
+		url 'http://splunk.artifactoryonline.com/splunk/ext-releases-local'
+	}
 }
 
+dependencies {
+	compile('com.splunk.logging:splunk-library-javalogging:1.5.0')
+	compile('org.springframework.boot:spring-boot-starter') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
 
-//eclipse {
-//	classpath {
-//		 containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-//		 containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-//	}
-//}
+	compile('org.springframework.boot:spring-boot-starter-log4j2')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test') 
+}
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '2.9'
