@@ -6,6 +6,7 @@
     </Appenders>
     <Loggers>
         <Root level="INFO">
+            <AppenderRef ref="socket"/>
         </Root>
         <Logger name="org.edu.ka" level="info">
             <AppenderRef ref="socket"/>
